@@ -75,7 +75,154 @@ http://localhost:3000
 
 This is what makes Node.js so unique and useful as a JavaScript environment, and throughout this tutorial we will explore this more. 
 
-### Resources to learn Node.js
+## Data Types in JS  
+
+Javscript has many similar primitive data types to whatever programming languages you may alreday be familiar with. I'll do a quick run-through of what these are, and then actually show you some code that will teach you the different ways to delcare them. Before we begin, I would like to point out that JS is an **implicitly typed** language, meaning that when we declare variables, we do not have to declare what variable type they are.
+
+#### Strings:  
+Strings are, what you'd expect, any combinations of characters enclosed in either single or double quotations. In JS, there is not a difference between which quotation marks you use, however, it's recommended and more professional if you keep consistency throughout a program. 
+```
+let name = "Jenn";
+```
+Some basic string methods that are built into JS. These include a `string.length;` method to return the length of a string, `string.slice(x, y);` to slice out a portion of a string from index x to index y, `string.toUpperCase();` and `string.toLowerCase();` to adjust the capitalization of a string, and `string.trim();` to remove whitespace from either side of a string. These are just a few examples of things that can be done with strings!
+
+#### Numbers:  
+Many langauges have some variation of integers (whole numbers) and floats (decimal numbers), however, JS just has one numerical data type: numbers! 
+```
+let num = 6;
+```
+
+If, for example, you take in user input stored in a variable x and they entered the string "5", you could convert it to a Number type by:
+
+```
+x = Number(x);
+```
+The numerical form of 5 then would be stored in the variable x. 
+
+#### Booleans:
+Booleans are variables that hold logical values (true or false).
+```
+let bool = true;
+```
+
+#### Arrays:
+Arrays are ways to store lists in JS. Arrays can hold mixed variable types, including strings, numbers, booleans, and even objects or functions. 
+```
+let arr = [9, "hello, world!", { age: 21 }, false];
+```
+There are several methods to access individual values from an array. The most simple one is just basic indexing (Arrays in JS start indexing at 0.)
+```
+let colors = ["red", "green", "pink", "teal"];
+let color1 = colors[0]; // red
+```
+
+Arrays in javascript also have a `forEach()` method to iterate through the entire list (even though a typical for loop can also be used). To use the forEach() method, you typically pair it with a function (so I'm letting you get a sneak peak on what those look like!).
+```
+function myFunction(item) {
+    console.log(item);
+}
+
+let fruits = ["apple", "orange", "cherry"];
+fruits.forEach(myFunction);
+// apple
+// orange
+// cherry
+```
+
+#### Objects:
+In Javascript, dictionary-like key-value pairs are actually stored in objects. There are many uses and functions of objects, however, let's just focus on storing/accessing key-value pairs right now. Note that objects should always be created with the `const` declaration: I'll cover this a little further down.
+
+```
+// create an object with key-value pairs
+const pet = {type:"dog", name:"Bolt"};
+
+// add an entry to the object
+pet.age = 4;
+
+// retrieve values from the object
+console.log(pet.name);
+
+// different syntax, same use:
+console.log(pet["age"]);
+```  
+### Mixed-type operations
+
+Depending on what programming language you are familiar with, it may or may not let you add (or perform other operations) on equations containing multiple variable types (typically, this would be numbers (or integers/floats) and strings. It is important to know how a langauge interacts in these instances for many reasons, one primary and simple one being user input. Oftentimes, when you ask a user for a numerical value, their response will be stored in a string, which is unfortunate if you wanted to perform any numerical operations on it. 
+
+In Javascript, you will not get an error if you try to add, subtract, multiply, or divide a Number data type with a String data type. However, the only operation that will actually "work" is addition. Let's take a look at this example:
+```
+function numString(n, s){
+    console.log(n + " + " + s + " = " + n + s);
+    let add = n + s;
+    console.log(n + " + " + s + " is a  " + typeof add);
+}
+numString(16, "jenn");
+
+// 16 + jenn = 16jenn
+// 16 + jenn is a  string
+```
+When you add a Number and a String in JS, it ends up concatenating the two values, with the resulting data type being a string. This may not be the result that you wanted, however, it does return a valid result, `16jenn`. This is because Javascript is **weakly typed**.
+
+Let's try another arithmetic operation: multiplication. The code will look very similar to the code for addition of mixed-type variables, but pay attention to the commented out results.
+```
+function numString(n, s){
+    console.log(n + " * " + s + " = " + n * s);
+    let mult = n * s;
+    console.log(n + " * " + s + " is a  " + typeof add);
+}
+numString(16, "jenn");
+// 16 * jenn = NaN
+// 16 * jenn is a number
+```
+As you can see, when you try to multiply a Number and a String, the result is just `NaN`, meaning Not a Number, which is actaully a Number data type. The results will look exactly the same if you attempt to subtract or divide a number and a string as well. Even though this doesn't produce an error in your code, it is not necessarily helpful or a successful operation.
+
+### Declaring variables in JS
+In Javascript, there are three main ways to decalre variables, and they allow variables to be accessed and modified in different ways. We've seen two used in my example code so far, `let` and `const`, but now we get to delve into what those actually mean.
+
+#### Var:
+```
+var num = 20;
+var num = 21; // redeclaration
+```
+Using `var` declares a variable within a global scope and allows re-declaration. This means that when you declare a variable using `var`, you can redeclare it even in the same scope as it was initially declared in. 
+
+#### Let:
+```
+let string = "twenty";
+string = "twenty-one"; // redefinition
+string = 21; // redefinition as a different type
+```
+With `let`, you can redfine a variable, however, it can't be redeclared. Also important to note is that declaring a variable with `let` makes it only accessible in the code block it is present in. If you declare a variable with `let` inside of a function, that variable can only be used in that function. If you declare a  `let` variable outside of a block, they will become global variables.
+
+Also important to note, with `let` (as was the case with `var`), because Javascript is **dynamically typed**, a variable can be redefined as a different variable type. Even if a variable is initially declared as a string value, if you want to later store a number in it, that is completely legal in JS. 
+
+In theory, `var` and `let` can be used similarly, however, it is best practice to default to using `let` when declaring a variable you want to be able to redefine, as defaulting to using `var`, unless you specifically need a global scoped variable, can oftentimes cause unwanted issues.
+
+#### Const:
+```
+const float = 26.4;
+// float = 27.0; <- will produce an error
+// var float = 27.0 <- will also produce an error
+```
+When you declare a variable with `const`, it cannot be redefined or redelcared. A variable that is a `const` variable is usable in the block it is declared in, however, like `let` variables, if you declare a  `const` variable outside of a block, they will become global variables.
+
+As mentioned in discussion of JS objects, `const` should always be used for object declaration. 
+
+### Variable Naming Conventions & Final Thoughts on Data Types
+
+Javascript does not have super strict naming conventions, and typical programming naming conventions you may have followed learning previous langauges likely still apply.
+
+Unlike some langauges, Javascript does allow variable names to begin with a capital letter, though this is unconvention. They are also allowed to begin with an underscore or dollar sign ($), however, they cannot begin with numbers. Both snake_case and camelCase are common naming conventions, and as you'll see throughout this tutorial, I personally prefer camelCase. 
+
+You can also find a complete list of JS reserve words [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words). 
+
+As discussed previously, JS is implicitly typed. Because of this, a variable is bound to it's type at runtime, and a variable is also bound to it's address at runtime because of that's when the initialization occurs. Javascript does not have exposed addresses like C++ and similar languages do. Furthermore, operators are bound to their operation at compile time, which is when the operator precedence is established.
+
+Javascript has a lot of freedom when it comes to variables and variable delcaration, due to the 3 different ways to declare a variable with different purposes. Different built-in methods provide useful ways to manipulate different data types, as demonstrated in my example code file attatched in the repository `var_testing.js`.
+
+
+
+## Resources to learn Node.js
 
 https://nodejs.org/en/learn/getting-started/introduction-to-nodejs  
 https://www.w3schools.com/nodejs/default.asp  
@@ -87,7 +234,13 @@ https://www.tutorialspoint.com/nodejs/index.htm
 
 
 
-### References
+## References
 [1] https://nodejs.org/en/learn/getting-started/introduction-to-nodejs  
 [2] https://en.wikipedia.org/wiki/Node.js#cite_note-28  
-[3] https://x.com/nodejs/status/1759953849849167878
+[3] https://x.com/nodejs/status/1759953849849167878  
+[4] https://www.geeksforgeeks.org/javascript/variables-datatypes-javascript/  
+[5] https://www.w3schools.com/js/js_string_methods.asp  
+[6] https://www.geeksforgeeks.org/javascript/difference-between-var-let-and-const-keywords-in-javascript/  
+[7] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions  
+[8] https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/  
+[9] https://www.w3schools.com/js/js_objects.asp  
