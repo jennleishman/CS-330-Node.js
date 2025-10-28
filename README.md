@@ -220,7 +220,208 @@ As discussed previously, JS is implicitly typed. Because of this, a variable is 
 
 Javascript has a lot of freedom when it comes to variables and variable delcaration, due to the 3 different ways to declare a variable with different purposes. Different built-in methods provide useful ways to manipulate different data types, as demonstrated in my example code file attatched in the repository `var_testing.js`.
 
+## Conditionals in JS
 
+### Quick reminder: Booleans!
+
+As mentioned previoiusly in the tutorial, booleans in Javascript are represented by `true` and `false`, in all lowercase. The number `0` also equates to `false`, and any number greater than zero to `true`. They occur most commonly when using if/else statements and loop statements, so keep them in your mind!
+
+### If/Else Statements
+
+In Javascript, if statements can be combined with optional else if or else statements to run through differing conditions. Here is an example of a simple if/else if/else statement:
+```
+let x = 3;
+let result;
+
+if (x == 0) {
+    result = "x = 0";
+} else if (x > 0) {
+    result = "x > 0";
+} else {
+    result = "x < 0";
+}
+console.log(result);
+```
+The first thing to pay attention to is the declaration of our variable, `result`. Because we declared it outside of the if/else if/else statement, we are then able to adjust the value depending on the condition, and also access it outside of the statement. Try not declaring result until you enter the conditions, and see what happens!
+
+Something else to note: formatting! In JS, if statements that only have one line contained in them are considered gramatically correct to just use indentation and not curly braces. However, using braces has an added benefit: avoiding the **dangling else** issue. This occurs when there are nested if statements, and it is unclear which `if` the `else` belongs to. This could look like:
+
+```
+if (x > 0)
+  if (x > 10)
+    console.log("x is big!");
+else
+    console.log("x is small");
+```
+Even though the indentation suggests that the else statement belongs to the first if statement, `if (x > 0)`, it actually will attatch itself to the last if statement that doesn't already have an else, which would be `if (x > 10)`. One of the best ways to avoid the dangling else issue is to just use braces. These will clarify which statements belong where.
+
+### Multi-condition if/else statements
+
+When writing if/else statements, we can also give use multiple conditions that need to be met, using the `&&` logical operator, for and, or using the `||` logical operator, for or. Take this example:
+```
+let age = 20
+if (age < 18) {
+    console.log("You are less than 18");
+} else if (age >= 18 && age < 21) {
+    console.log("You are between 18 and 21");
+} else {
+    console.log("You are older than 21");
+}
+```
+Here, `&&` is used to set both an upper and lower boundary on the else if statement.
+
+### Short-circuit evaluation
+
+Short circuiting occurs in JS when the second part of a multi-condition statement gets ignored due to the conditions met (or not met) by the first part. 
+
+#### Short-circuting with ||
+
+Let's look at an example of short circuiting using an or, `||` statement.
+```
+let value = true || console.log("Irrelevant");
+console.log(value);
+// true
+```
+Here, because `true` is evaluated first, the second half of the statement gets looked over, and does not get printed. Because the first condition was met, there is no need to continue reading, and Javascript will just jump to the next line.
+
+#### Short-circuiting with &&
+
+Let's look at an example of short circuiting using an and, `&&` statement.
+```
+if (false && console.log("testing!")){
+    console.log("Irrelevant")
+}
+// nothing gets printed
+```
+Here, because our conditional and statement begins with the boolean `false`, the entire statement inherently cannot be true. Because of this, the code will short-circuit and exit the if statement without reading the rest of the line and printing the testing statement.
+
+### Conditional (ternary) operator
+
+Besides the if/else if/else statements that we have covered so far, Java has a unique feature that can be an alternative for if/else statements, and allows for conditional chaining as well as implementation with functions. Here is a very simple example to get used to the syntax:
+```
+let cost = 10;
+let price = cost >= 25 ? "Expensive" : "Cheap";
+console.log(price); // Cheap
+```
+This code block checks a cost of 10, and says that if it is greater or equal to 25, to let price = "Expensive", otherwise, let price = "Cheap". The same work can be done with an if/else statement, however, this is an interesing conditional to note.
+
+### Switch Statements
+
+Many langauges, including Javascript, implement switch statements, which work similar again to if/else statements, but are best used when there are many conditions that you want to check. Here is an example of a code block using a switch statement:
+```
+let favColor = "purple";
+
+switch (favColor) {
+    case "red":
+        console.log("My favorite color is red");
+        break;
+    case "orange":
+        console.log("My favorite color is orange");
+        break;
+    case "yellow":
+        console.log("My favorite color is yellow");
+        break;
+    case "green":
+        console.log("My favorite color is green");
+        break;
+    case "blue":
+        console.log("My favorite color is blue");
+        break;
+    case "purple":
+        console.log("My favorite color is purple");
+        break;
+    case "pink":
+        console.log("My favorite color is pink");
+        break;
+    default:
+        console.log("My favorite color is not listed");
+        break;
+}
+```
+Javascript uses the `break` condition in switch statements, and the `continue` condition can also be used instead of breaking if you want to pass by a statement to continue checking. 
+
+### While loops
+
+The two primary loop structures in JS are while loops and for loops, and while both can be used for differing purposes, the primary difference is that for loops self-increment, and while loops do not.
+
+#### Single-condition while loop
+
+Take an example of a simple, single-condition while loop:
+```
+let i = 0 
+let count;
+while (i < 5) {
+    count = i;
+    i++; // IMPORTANT
+}
+console.log(count); // 4
+```
+Here, the while loops increments the loop-control-variable, i, by 1 until i < 5.  This means that the coutn printed out at the end will equal 4. This is a very basic structure while loop.
+
+#### Do-while loops
+
+Do-while loops are another form of while loop, with the primary use being if you want to guarantee the loop is entered at least once, no matter the condition. Here is an example that mimics the same function as the previous single-condition while loop. 
+```
+i = 0
+do {
+    count = i;
+    i++;
+}
+while (i < 5);
+console.log(count);
+```
+Take a look at how they differ, and use the single-conditon while loop as an example to understand the function of this do-while loop. 
+
+#### Multi-condition while loop
+
+Here is an example of a while loop that has multiple conditions:
+```
+let i = 0
+var keepGoing = true;
+while (i < 10 && keepGoing == true) {
+    console.log("hi!");
+    if (i == 3) {
+        keepGoing = false;
+    } 
+    i++;
+}
+// hi!
+// hi!
+// hi!
+// hi!
+```
+It is common for while loops to have multiple conditions, one being a condition that allows a user to leave a while loop early if they are done. Oftentimes, this is implemented with asking for user input while inside the while loop, but for simplicity sake, I manually set keepGoing in this code block to end this loop at i == 3. The loop will end even though i is still less than 10.
+
+### For loops
+
+To introduce simple for loops, let's look at this one:
+```
+let count = 0;
+for (let i = 0; i < 5; i++) {
+    count++;
+}
+console.log(count); // 5
+```
+This loop will continue until i < 5, and automatically increments i by 1 (given the `i++` notation), each iteration through the loop. Unlike while loops, for loops allow for this automatci incrementation. 
+
+#### For in loops
+
+Another common use of for loops is to loop through either an array or an object to print out all of it's contents. This can be seen here:
+```
+const person = {name: "Jenn", age: 20};
+for (let key in person) {
+    console.log(key+": "+person[key]);
+}
+// name: Jenn
+// age: 20
+```
+This loop creates a variable `key`, to evaluate each key-value pair in the object and then print out both said key and the corresponding value. For in loops are one of the many reasons that for loops are unique from while loops.
+
+### Conditionals: Final thoughts
+
+Conditionals are a very fundamental part of coding in Javascript, and though some aspects may seem similar to conditionals in other languages, it's important to understand these. 
+
+The biggest difference between loop code blocks and function code blocks are that variables delcared with `let` or `const` inside of a loop/if code block are only block-scoped variables. They can only be used inside of the block, while variables delcared inside of a function can be used freely throughout that function and the blocks that belong to it.
 
 ## Resources to learn Node.js
 
@@ -244,3 +445,11 @@ https://www.tutorialspoint.com/nodejs/index.htm
 [7] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions  
 [8] https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/  
 [9] https://www.w3schools.com/js/js_objects.asp  
+[10] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else  
+[11] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator  
+[12] https://www.freecodecamp.org/news/javascript-if-else-and-if-then-js-conditional-statements/  
+[13] https://www.geeksforgeeks.org/javascript/javascript-short-circuiting/  
+[14] https://www.geeksforgeeks.org/compiler-design/dangling-else-ambiguity/ 
+[15] https://www.w3schools.com/js/js_loop_while.asp  
+[16] https://www.w3schools.com/js/js_loop_for.asp  
+[17] https://www.w3schools.com/js/js_booleans.asp  
