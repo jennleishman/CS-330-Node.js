@@ -423,6 +423,115 @@ Conditionals are a very fundamental part of coding in Javascript, and though som
 
 The biggest difference between loop code blocks and function code blocks are that variables delcared with `let` or `const` inside of a loop/if code block are only block-scoped variables. They can only be used inside of the block, while variables delcared inside of a function can be used freely throughout that function and the blocks that belong to it.
 
+## Functions
+
+In Javascript, functions follow a similar syntax not much different from other concepts we've already learned, like loops and if/else statements. I'm going to show you a simply function and then we can talk through what is happening.
+
+### Function Syntax
+
+```
+function multiply(num1, num2) {
+    console.log("hello from function!");
+    return num1 * num2;
+}
+
+let num1 = 12;
+let num2 = 15;
+let product = multiply(num1, num2);
+console.log(product);
+// hello from function!
+// 180
+```
+This chunk of code declares a function called `multiply`, which accepts two parameters: `num1`, and `num2`. These are variables declared in the main code, however, by sending them into the function, the function can access them. You can send in zero, one, or many parameters into a function.
+
+You open the function with curly braces, and the function itself can contain any code. It is best practice for each function you write to be contained to a singular purpose, and for functions to be named related to this purpose. Function names follow identifier variable naming patterns. 
+
+In this function, we have a console.log statement, followed by a return statement. Return statements are not required. However, if you want to access any variables you create in the function back in your main code, you should utilize return. The line `let product = multiply(num1, num2);` declares a variable `product`, and then stores the value returned from the function `multiply` as `product`. Furthermore, when you call the multiply function, you have to send in the two parameters that it "catches". 
+
+### Function placement
+
+In JS, you can place your functions anywhere in your code. However, it is best practice to place a function above the code where you run that function from, even if it will work if the function is below. 
+
+If you are sending parameters into a function, make sure that these variables are created before you call a function. 
+
+Oftentimes, functions will be placed in order of when they are used in the code, or based on ones of similar use. In my `functions.js` code example found in this repository, I have a function followed by the code running it, and then another function followed by it's corresponding code. When you are writing a professional JS program, this is not ideal, however, is most clear for learning purposes.
+
+### Recursive functions
+
+Recursion is, in simple terms, when a function calls itself. Typically, a function call occurs outside of a function in the main code, however, you can also call functinos from within one another and within oneself! There are many reasons for recursion, many of which include changing the parameter that the function "catches" each time it is called. A good use case for recursive functions is a function to calculate factorials. 
+```
+function factorial(n){
+    if (n == 0 || n == 1) {
+        return 1;
+    } else {
+        return n * factorial(n-1);
+    }
+}
+console.log(factorial(10)); // 3628800
+```
+This code creates a function called factorial, that accepts a parameter `n`. The function contains an if/else statement, with different return statements depending on what is true. If the parameter sent in, n, is 0 or 1, this function will return 1 (because 0! and 1! both equal 1). Otherwise, returns `n * factorial(n-1)`. 
+
+Instead of returning to the main code where you called the function, this code will continually **recurse** through the function until n == 1. Every time it enters the function, the parameter n decreases by 1. Finally, once n = 1, the stack of function calls will be **unwound** and multiplied over and over by an increasing value until the original n! requested is reached.
+
+### Parameters
+
+Something else that you can observe from the previous `factorial` function is that when `factorial(10)` is called in the console.log statement, I am directly sending in the value 10 as the parameter. When the function is declared, it is declared as `function factorial(n)`. The parameters that you send into a function from your main code can be raw strings or integers, or they can be variables. The names of the variables you send into a function do not have to match the names of variables the function catches; as long as you send in the same number of parameters, they will be caught in the order they are sent in regardless of name.
+
+Just like sending variables into a function, you can also return multiple values, however, you have to story them in an array to do so. If you return a value from a function, you also have to "catch" it in your main code. You can see here what returning two values from a function looks like:
+```
+function split(string) {
+    let s1 = string.split(" ")[0];
+    let s2 = string.split(" ")[1];
+    return[s1,s2];
+}
+let [x,y] = split("hello world");
+console.log(x); // hello
+console.log(y); // world
+```
+This function accepts one parameter, a string, and uses the `.split()` function to split the string into two parts, returning each separately. `let s1 = string.split(" ")[0]` splits the string at any empty space, takes the value at index zero (so the first chunk), and stores it in s1. Then, this function returns both to our main code, where you can see that s1 and s2 are caught as [x,y]. 
+
+This method can be used to return as many values as you'd like from a function. However, it is also best practice to consider that if you are returning more than one value from a function, it may be doing more than one task, and you should split it up into smaller functions.
+
+### Passing-by-value and passing-by-reference
+
+When parameters are sent into a function, there are two ways this occurs: **pass-by-value** and **pass-by-reference**. When a parameter is passsed by value, this means that a _copy_ of the parameter is sent into a function. Whatever happens to that copy remains within the function unless it is explicitly returned and updated in the main code. Alternatively, when a parameter is passed by reference, the function references a parameter itself, and therefore, any changes that are remained update outside of the function as well.
+
+#### Pass-by-value
+
+In Javascript, whenever you send in numbers, strings, booleans, or any other data type that is not an **array** or an **object** into a function, it is passed in by value. Here is an example where numbers are passed into a function:
+```
+function alter(n) {
+    n += 5;
+    console.log("Inside function: " + n);
+}
+let n = 6;
+alter(n);
+console.log("Outisde function: " + n);
+// Inside function: 11
+// Outside function: 6
+```
+Because `n` is not returned from this function, the changes made do not retain themselves when the function is exited.
+
+#### Pass-by-reference
+
+In Javascript, whenever you send in either an array or an object into a function, it is passed by refernence. This means that the original object or array from the main code can be updated in the function, not returned, and the updates remain when you exit the function. Take this example with an array:
+```
+function push(array) {
+    array.push("Beaver");
+}
+const animals = ["Sea otter","Prairie dog","Ground squirrel"];
+push(animals);
+console.log(animals);
+// [ 'Sea otter', 'Prairie dog', 'Ground squirrel', 'Beaver' ]
+```
+As you can see, the function push utilizes the `array.push()` argument to add "Beaver" onto the end of the string. Nothing is returned, however, when we print the array after calling the function, "Beaver" appears at the end of it. This, as I mentioned, is the same case with objects as well.
+
+### Argument storage during function execution
+
+There are two primary places where values are stored in memory in Javascript: the stack and the heap. When a function is called, a new execution is pushed onto the **call stack**. When the function is not currently running, a reference to the function is actually placed in the heap. Furthermore, local variables are stored in the stack. For objects and arrays, because they can be of an uncertain size, the objects and arrays themselves are stored in the heap while references to them are stored in the stack.
+
+
+
 ## Resources to learn Node.js
 
 https://nodejs.org/en/learn/getting-started/introduction-to-nodejs  
@@ -453,3 +562,8 @@ https://www.tutorialspoint.com/nodejs/index.htm
 [15] https://www.w3schools.com/js/js_loop_while.asp  
 [16] https://www.w3schools.com/js/js_loop_for.asp  
 [17] https://www.w3schools.com/js/js_booleans.asp  
+[18] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions  
+[19] https://developer.mozilla.org/en-US/docs/Glossary/Recursion  
+[20] https://www.geeksforgeeks.org/javascript/javascript-return-multiple-values-from-function/  
+[21] https://www.w3schools.com/jsref/jsref_split.asp  
+[22] https://www.w3schools.com/jsref/jsref_push.asp  
