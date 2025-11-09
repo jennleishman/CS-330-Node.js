@@ -530,7 +530,82 @@ As you can see, the function push utilizes the `array.push()` argument to add "B
 
 There are two primary places where values are stored in memory in Javascript: the stack and the heap. When a function is called, a new execution is pushed onto the **call stack**. When the function is not currently running, a reference to the function is actually placed in the heap. Furthermore, local variables are stored in the stack. For objects and arrays, because they can be of an uncertain size, the objects and arrays themselves are stored in the heap while references to them are stored in the stack.
 
+## Object-Oriented Programming in Javascript
 
+Even though I already discussed the basic object as a datatype in Javascript, we can take our understanding of objects one step further. Though Javascript is not an object-oriented programming language in the same way that languages such as Java are, you can still implement class structure as a convenient way to create multiple similar objects and contain methods in these classes as well. 
+
+Let's take a look at a basic Person class that contains a display method:
+```
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+    toString() {
+        return "You are " + this.name
+    }
+}
+const person = new Person("Jenn");
+console.log(person.toString()); // "You are Jenn"
+```
+In Javascript, class names typically start with a capital letter, as seen here. In the class, the `constructor` is what accepts any parameters sent into the class. Then, to establish attributes, inside of the constructor uses `this.___` naming patterns to establish attributes. For this Person class, a name is given, and then it is stored as an attribute in the constructor using `this.name = name`. Essentially, a constructor is all that is required to create a class. However, most classes will often have a toString() method. This allows us to print attributes in a specific format back in the main code. The typical syntax for a print method is `toString()`, however, you can rename it if you would like. 
+
+To create an object using the class, the syntax `const person = new Person("<name>")` can be used, and allows you to send in whatever name your new person has. Then, you can use the toString() method as discussed earlier to "print" the person. 
+
+### Inheritance
+
+Classes can also "inherit" from one another in JS, though they cannot have multiple inheritance like some object-oriented languages can. A good example of this using our Person class is that we can create an Employee class that uses the constructor from the Person class to create a person, and then also establishes job and pay. Let's look and talk through this example that uses the Person code from before:
+```
+class Employee extends Person {
+    constructor(name, job, salary) {
+        super(name);
+        this.job = job;
+        this.salary = salary;
+    }
+    toString() {
+        return this.name + " works as a " + this.job;
+    }
+    payday() {
+        return this.name + ", you just got paid $" + this.salary;
+    }
+}
+```
+Notice how when we create this class, it **extends** Person. Then, in our constructor, we call `super(name)`. Because we extended our Person class, `super(name)` will actually use the constructor from our Person class to create a name attribute for our Employee class. Even though this is a small time-saver, if we had many types of Persons to create and potentially other uniform attributes between them, object-oriented design and class inheritance becomes very helpful. Our Employee class also has a second method, called `payday()`. This is just another example of a class method; in this case, it will display how much the employee gets paid on payday.
+
+### Updating attributes
+
+The most common way to update attributes of a specific object occurs in your main code. If you have created an employee but want to update their salary, you can run `employee.salary = <new salary>;` and input whatever you would like to update the salary to. This is easy to manually update the values of an individual attribute in an object. 
+
+Another option, if updating a certain attribute is uniform and may occur several times, is actually to create an update method. For example, if you wanted a method for an employee to receive a raise, you could update the salary attribute directly from that method. Take a look at this example of a method that could be added to the Employee class:
+```
+raise() {
+        this.salary = this.salary += 100;
+        return "You got a raise!";
+    }
+```
+When called, this method increases the salary by 100, updating this.salary. Another common method in classes is a simple set function, where a user can input whatever new value they would like the attribute to be reset to and it will reset it.
+
+### Using object methods
+
+Though I already went over creating an object using a class, I want to review again how to utilize methods. Here is an example using our full Employee class, as well as our raise method:
+```
+const employee = new Employee("Sally", "librarian", 500);
+console.log(employee.toString());
+console.log(employee.payday());
+console.log(employee.raise());
+console.log(employee.payday());
+```
+When this code is ran, the console will display:
+```
+Sally works as a librarian
+Sally, you just got paid $500
+You got a raise!
+Sally, you just got paid $600
+```
+As you can see, we can run console.log to print each of these methods from our object. 
+
+Classes can be extremely helpful to take an object-oriented design approach when coding in Javascript, and though the language is not built particularly for object-orientation, it is definitely possible to utilize. 
+
+_All of the object code can be found in this repository for you to run and test, putting both classes as well as running the methods together._
 
 ## Resources to learn Node.js
 
@@ -558,7 +633,7 @@ https://www.tutorialspoint.com/nodejs/index.htm
 [11] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator  
 [12] https://www.freecodecamp.org/news/javascript-if-else-and-if-then-js-conditional-statements/  
 [13] https://www.geeksforgeeks.org/javascript/javascript-short-circuiting/  
-[14] https://www.geeksforgeeks.org/compiler-design/dangling-else-ambiguity/ 
+[14] https://www.geeksforgeeks.org/compiler-design/dangling-else-ambiguity/  
 [15] https://www.w3schools.com/js/js_loop_while.asp  
 [16] https://www.w3schools.com/js/js_loop_for.asp  
 [17] https://www.w3schools.com/js/js_booleans.asp  
@@ -567,3 +642,4 @@ https://www.tutorialspoint.com/nodejs/index.htm
 [20] https://www.geeksforgeeks.org/javascript/javascript-return-multiple-values-from-function/  
 [21] https://www.w3schools.com/jsref/jsref_split.asp  
 [22] https://www.w3schools.com/jsref/jsref_push.asp  
+[23] https://www.w3schools.com/js/js_class_inheritance.asp  
